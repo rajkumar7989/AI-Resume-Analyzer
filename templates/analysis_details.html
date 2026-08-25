@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Analysis Details - AI Resume Analyzer</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+
+            margin: 0;
+
+            padding: 0;
+
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+
+            color: #1f2937;
+        }
+
+        nav {
+            background: white;
+
+            padding: 20px 8%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            box-shadow:
+                0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        nav h2 {
+            color: #4f46e5;
+        }
+
+        nav a {
+            color: #4f46e5;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1000px;
+
+            margin: 40px auto;
+
+            padding: 20px;
+        }
+
+        .title {
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            font-size: 38px;
+
+            margin-bottom: 10px;
+        }
+
+        .title p {
+            color: #6b7280;
+        }
+
+        .scores {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 25px;
+
+            margin-bottom: 30px;
+        }
+
+        .score-card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .score-card h2 {
+            font-size: 19px;
+
+            margin-bottom: 15px;
+        }
+
+        .score {
+            font-size: 55px;
+
+            font-weight: bold;
+
+            color: #4f46e5;
+
+            margin: 10px 0;
+        }
+
+        .level {
+            display: inline-block;
+
+            padding: 8px 16px;
+
+            background: #eef2ff;
+
+            color: #4f46e5;
+
+            border-radius: 20px;
+
+            font-weight: bold;
+        }
+
+        .description {
+            margin-top: 12px;
+
+            color: #6b7280;
+
+            font-size: 14px;
+        }
+
+        .cards {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 25px;
+
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.06);
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+        }
+
+        .matched h2 {
+            color: #16a34a;
+        }
+
+        .missing h2 {
+            color: #dc2626;
+        }
+
+        .card ul {
+            list-style: none;
+        }
+
+        .card li {
+            padding: 12px;
+
+            margin-bottom: 8px;
+
+            background: #f5f7fb;
+
+            border-radius: 8px;
+        }
+
+        .empty {
+            color: #6b7280;
+        }
+
+        .roles {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.06);
+
+            margin-bottom: 30px;
+        }
+
+        .roles h2 {
+            color: #4f46e5;
+
+            margin-bottom: 20px;
+        }
+
+        .role {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            background: #f5f7fb;
+
+            padding: 15px;
+
+            margin-bottom: 10px;
+
+            border-radius: 8px;
+        }
+
+        .role-name {
+            font-weight: bold;
+        }
+
+        .role-score {
+            color: #4f46e5;
+
+            font-weight: bold;
+        }
+
+        .recommendation {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.06);
+
+            margin-bottom: 30px;
+        }
+
+        .recommendation h2 {
+            color: #4f46e5;
+
+            margin-bottom: 15px;
+        }
+
+        .recommendation p {
+            color: #374151;
+
+            line-height: 1.8;
+
+            font-size: 16px;
+        }
+
+        .date {
+            margin-top: 20px;
+
+            color: #9ca3af;
+
+            font-size: 13px;
+        }
+
+        .buttons {
+            display: flex;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-block;
+
+            padding: 12px 22px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .primary {
+            background: #4f46e5;
+
+            color: white;
+        }
+
+        .primary:hover {
+            background: #3730a3;
+        }
+
+        .secondary {
+            background: white;
+
+            color: #4f46e5;
+
+            border: 1px solid #4f46e5;
+        }
+
+        @media (max-width: 700px) {
+
+            .scores,
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .role {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <nav>
+
+        <h2>
+            AI Resume Analyzer
+        </h2>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+    </nav>
+
+
+    <div class="container">
+
+
+        <div class="title">
+
+            <h1>
+                Analysis Details
+            </h1>
+
+            <p>
+                Complete analysis of your resume against the job description
+            </p>
+
+        </div>
+
+
+        <div class="scores">
+
+
+            <div class="score-card">
+
+                <h2>
+                    Resume Quality Score
+                </h2>
+
+                <div class="score">
+                    {{ result["resume_quality_score"] }}%
+                </div>
+
+                <p class="description">
+                    Overall quality and completeness of your resume.
+                </p>
+
+            </div>
+
+
+            <div class="score-card">
+
+                <h2>
+                    Job Compatibility Score
+                </h2>
+
+                <div class="score">
+                    {{ result["match_score"] }}%
+                </div>
+
+                <div class="level">
+                    {{ result["match_level"] }}
+                </div>
+
+                <p class="description">
+                    Compatibility between your resume and the job.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="cards">
+
+
+            <div class="card matched">
+
+                <h2>
+                    ✓ Matched Skills
+                </h2>
+
+
+                {% if matched_skills %}
+
+                <ul>
+
+                    {% for skill in matched_skills %}
+
+                    <li>
+                        ✓ {{ skill }}
+                    </li>
+
+                    {% endfor %}
+
+                </ul>
+
+                {% else %}
+
+                <p class="empty">
+                    No matching skills detected.
+                </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="card missing">
+
+                <h2>
+                    ✗ Missing Skills
+                </h2>
+
+
+                {% if missing_skills %}
+
+                <ul>
+
+                    {% for skill in missing_skills %}
+
+                    <li>
+                        ✗ {{ skill }}
+                    </li>
+
+                    {% endfor %}
+
+                </ul>
+
+                {% else %}
+
+                <p class="empty">
+                    No major skill gaps detected.
+                </p>
+
+                {% endif %}
+
+            </div>
+
+
+        </div>
+
+
+        <div class="roles">
+
+            <h2>
+                🎯 Recommended Career Roles
+            </h2>
+
+
+            {% if recommended_roles %}
+
+                {% for role in recommended_roles %}
+
+                <div class="role">
+
+                    <span class="role-name">
+                        {{ role["role"] }}
+                    </span>
+
+                    <span class="role-score">
+                        {{ role["score"] }}%
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+            <p class="empty">
+                No career roles available.
+            </p>
+
+            {% endif %}
+
+
+            <div class="date">
+
+                Analysis Date:
+                {{ result["created_at"] }}
+
+            </div>
+
+        </div>
+
+
+        {% if result["ai_recommendation"] %}
+
+        <div class="recommendation">
+
+            <h2>
+                🤖 AI Career Recommendation
+            </h2>
+
+            <p>
+                {{ result["ai_recommendation"] }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <div class="buttons">
+
+            <a
+                href="/dashboard"
+                class="button secondary"
+            >
+                ← Back to Dashboard
+            </a>
+
+
+            <a
+                href="/"
+                class="button primary"
+            >
+                Analyze New Resume
+            </a>
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>
